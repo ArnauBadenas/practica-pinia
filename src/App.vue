@@ -3,7 +3,6 @@ import TheHeader from "@/components/TheHeader.vue";
 import ProductCard from "@/components/ProductCard.vue";
 import { useProductStore } from "./stores/productStore";
 import { useCartStore } from "./stores/cartStore";
-//TEST AQUESTA NO ES LA PRACTICA 1
 /*
 Si no volem accedir a tot l’store, podem extreure un part d’aquesta,
 però per assegurar que l’estat es manté reactiu hem de fer servir la funció storeToRefs
@@ -16,12 +15,23 @@ const productStore = useProductStore()
 const cartStore = useCartStore();
 productStore.fill()
 
-const addToCart=(count,product)=>{
-  count = parseInt(count)
-  for(let index = 0; index<count; index++){
-    cartStore.items.push(product)
-  }
-}
+// const addToCart=(count,product)=>{
+//   count = parseInt(count)
+//
+//   /*
+//   El patch es per agrupar totes les mutacions que siguin iguals en una.
+//   Per exemple, si demanem 20 pinyes.
+//
+//   Com el patch utilitza el propi cartstore, els items s'afegeixen directament
+//   al estat.
+//   */
+//   cartStore.$patch(state=>{
+//     for(let index = 0; index<count; index++){
+//       state.items.push(product)
+//     }
+//   })
+//
+// }
 </script>
 
 <template>
@@ -32,7 +42,7 @@ const addToCart=(count,product)=>{
         v-for="product in productStore.products"
         :key="product.name"
         :product="product"
-        @addToCart="addToCart($event,product)"
+        @addToCart="cartStore.addItems($event,product)"
       />
     </ul>
   </div>
