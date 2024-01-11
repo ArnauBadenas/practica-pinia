@@ -21,10 +21,14 @@ export const useCartStore=defineStore("CartStore",{
         //Conta de número de items
         count:(state)=>state.items.length,
         //Comprovació de si un altre getter es 0
-        isEmpty:(state)=>state.items.count===0,
+        isEmpty:(state)=> (state.count === 0),
         //Agrupar per nom
         grouped:state=>groupBy(state.items,item=>item.name),
         //Contar items agrupats
         groupCount: (state)=>(name)=>state.grouped[name].length
+        //Calcular el preu total de forma dinamica
+        countTotalPrice:(state)=>{
+            state.items.reduce((acc, curr) => acc + curr.price, 0)
+        }
     }
 });
