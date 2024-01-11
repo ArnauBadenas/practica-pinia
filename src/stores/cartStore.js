@@ -16,6 +16,10 @@ export const useCartStore=defineStore("CartStore",{
                 this.items.push({...item})
             }
         },
+        //Treure un item en concret
+        clearItem(name){
+            this.items = this.items.filter(item => item.name !== name)
+        },
     },
     getters:{
         //Conta de número de items
@@ -27,7 +31,8 @@ export const useCartStore=defineStore("CartStore",{
         //Contar items agrupats
         groupCount: (state)=>(name)=>state.grouped[name].length,
         //Calcular el preu total de forma dinamica
-        countTotalPrice:state=>state.items.reduce((acc, curr) => acc + curr.price, 0)
+        countTotalPrice:state=>state.items.reduce((acc, curr) => acc + curr.price, 0),
+
 
     }
 });
