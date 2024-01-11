@@ -24,5 +24,7 @@ export const useCartStore=defineStore("CartStore",{
         isEmpty:(state)=>state.items.count===0,
         //Agrupar per nom
         grouped:state=>groupBy(state.items,item=>item.name),
+        //Contar items agrupats
+        groupCount: (state)=>(name)=>state.grouped[name].length
     }
 });
