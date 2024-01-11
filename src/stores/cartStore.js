@@ -25,10 +25,9 @@ export const useCartStore=defineStore("CartStore",{
         //Agrupar per nom
         grouped:state=>groupBy(state.items,item=>item.name),
         //Contar items agrupats
-        groupCount: (state)=>(name)=>state.grouped[name].length
+        groupCount: (state)=>(name)=>state.grouped[name].length,
         //Calcular el preu total de forma dinamica
-        countTotalPrice:(state)=>{
-            state.items.reduce((acc, curr) => acc + curr.price, 0)
-        }
+        countTotalPrice:state=>state.items.reduce((acc, curr) => acc + curr.price, 0)
+
     }
 });
