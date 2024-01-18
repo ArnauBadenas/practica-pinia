@@ -1,5 +1,6 @@
-import { defineStore } from "pinia";
-import {groupBy} from "lodash";
+import {defineStore} from "pinia";
+import {groupBy, sortBy} from "lodash";
+
 export const useCartStore=defineStore("CartStore",{
     state:()=>{
         return{
@@ -20,6 +21,11 @@ export const useCartStore=defineStore("CartStore",{
         clearItem(name){
             this.items = this.items.filter(item => item.name !== name)
         },
+        //Actualitzar el count del item
+        setItemCount(item,count){
+            this.clearItem(item.name)
+            this.addItems(count,item)
+        }
     },
     getters:{
         //Conta de número de items
@@ -27,12 +33,22 @@ export const useCartStore=defineStore("CartStore",{
         //Comprovació de si un altre getter es 0
         isEmpty:(state)=> (state.count === 0),
         //Agrupar per nom
-        grouped:state=>groupBy(state.items,item=>item.name),
+        //TODO añadir orderby
+        grouped:state=> {
+            //Agrupar els items per nom
+            const grouped = groupBy(state.items,item=>item.name)
+            //Aplanar l'array (si hi ha un array d'arrays, treu-ho fora perque nomes sigui un array)
+            const allItems = Object.values(grouped).flat()
+            //Ordenar els items per nom
+            const sortedItems = sortBy(allItems,'name')
+            //Tornar a agrupar els items, ja que en el procés de flat i sort ha canviat l'array.
+            return groupBy(sortedItems, item => item.name)
+        },
+
+
         //Contar items agrupats
         groupCount: (state)=>(name)=>state.grouped[name].length,
         //Calcular el preu total de forma dinamica
         countTotalPrice:state=>state.items.reduce((acc, curr) => acc + curr.price, 0),
-
-
     }
 });
