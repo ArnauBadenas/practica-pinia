@@ -1,15 +1,18 @@
-import {defineStore} from "pinia";
+import { defineStore , acceptHMRUpdate} from "pinia";
 import {groupBy, sortBy} from "lodash";
 import {useAuthUserStore} from "./AuthUserStore";
+import {useLocalStorage} from "@vueuse/core"
 
 export const useCartStore=defineStore("CartStore",{
+    historyEnabled: true,
     state:()=>{
         return{
-            items:[],
+            items:useLocalStorage("CartStore:items",[]),
         }
     },
     actions:{
         addItems(count,item){
+            //throw new Error("example error");
             count=parseInt(count);
             for (let index=0;index<count;index++){
                 //En lloc de passar el item per referencia (si canvia un canvien tots)
@@ -58,3 +61,8 @@ export const useCartStore=defineStore("CartStore",{
         countTotalPrice:state=>state.items.reduce((acc, curr) => acc + curr.price, 0),
     }
 });
+
+if(import.meta.hot){
+    import.meta.hot.accept(acceptHMRUpdate(useCartStore,import.meta.hot));
+}
+
