@@ -27,7 +27,7 @@ export function piniaHistoryPlugin({pinia, app, store, options}){
     return {
         undo:()=>{
             //si la longitud és 1 només tinc l'estat inicial i, per tant, no puc fer undo
-            if (history.length===1) return
+            if (history.length===1) {return}
             doingHistory.value=true;
             //en cas contrari estrec l'ultim estat de l'array i
             future.push(history.pop());
