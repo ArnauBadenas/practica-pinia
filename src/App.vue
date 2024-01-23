@@ -19,6 +19,7 @@ const future=reactive([])
 const doingHistory=ref(false)
 
 history.push(JSON.stringify(cartStore.$state));
+
 cartStore.$subscribe((mutation,state)=>{
   if(!doingHistory.value){
     history.push(JSON.stringify(state));
@@ -99,8 +100,8 @@ const redo=()=>{
   <div class="container">
     <TheHeader />
     <div class="mb-5 flex justify-end">
-      <AppButton @click="undo">Undo</AppButton>
-      <AppButton class="ml-2" @click="redo">Redo</AppButton>
+      <AppButton @click="cartStore.undo">Undo</AppButton>
+      <AppButton class="ml-2" @click="cartStore.redo">Redo</AppButton>
     </div>
     <ul class="sm:flex flex-wrap lg:flex-nowrap gap-5">
       <ProductCard
